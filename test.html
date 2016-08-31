@@ -34,7 +34,9 @@
     <script type="text/javascript" src="adi.js"></script>
     <script type="text/javascript">
     
-        var $adi = new AdvancedDataInput();
+        var $adi = new AdvancedDataInput({ layoutCreated: function (container) {
+            container.find('input').css('border-width', '5px');
+        }});
         
         $adi.Render($('#container'), [
             {name: 'Nature', caption: 'Nature', type: 'optional', options: { 

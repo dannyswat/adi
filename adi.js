@@ -1,7 +1,8 @@
 var AdvancedDataInput = function (userSetting) {
     
     var setting = {
-        animationSpeed: 500
+        animationSpeed: 500,
+        layoutCreated: function (container) {}
     };
     
     $.extend(setting, userSetting);
@@ -52,10 +53,13 @@ var AdvancedDataInput = function (userSetting) {
         'date': function () {
             var ctrl = $('<input type="text" class="ui-date" />').val(this.data || this.options.defaultValue);
             this.container.append(ctrl);
+
             var opts = { onSelect: this.validate };
-            ctrl.datepicker($.extend(opts, this.options));
+            $.extend(opts, this.options);
+
+            ctrl.datepicker(opts);
             this.appendAlready = true;
-            
+
             return ctrl;
         }
     };
@@ -99,6 +103,8 @@ var AdvancedDataInput = function (userSetting) {
         container.addClass('adi-container').data('crud', crud).data(DATAOBJECT, data);
         
         renderChildren(container, container, definitions, data);
+
+        setting.layoutCreated(container);
     };
     
     var renderChildren = function (root, container, definitions, data) {
@@ -129,8 +135,10 @@ var AdvancedDataInput = function (userSetting) {
         var data = getValue(container);
         var parentName = container.data(PARENTNAME);
         container.html('').data(PARENTNAME, parentName.substring(0, parentName.indexOf('.')));;
-        //data[container.data('definition').name] = data;
-        renderControl(container.data(ROOTCONTAINER), container, container.data('definition'), data);
+
+        renderControl(container.data(ROOTCONTAINER), container, container.data(DEFINITION), data);
+
+        setting.layoutCreated(container);
     }
     
     function addGroupButtons(groupContainer) {
@@ -166,7 +174,8 @@ var AdvancedDataInput = function (userSetting) {
             grpContainer.after($(this));
             renderChildren(container.data(ROOTCONTAINER), grpContainer, container.data(DEFINITION).items, null);
             addGroupButtons(grpContainer);
-            
+            setting.layoutCreated(grpContainer);
+
             grpContainer.hide().slideDown(setting.animationSpeed);
             
         }).data(ARRAYCONTAINER, itemContainer);
@@ -188,13 +197,17 @@ var AdvancedDataInput = function (userSetting) {
                 optDefinition = opt.definition;
             }
         }
+
+        setting.layoutCreated(itemContainer);
         
         if (optDefinition) {
             var item2Container = $('<div class="adi-item option-group">').data(PARENTNAME, parentName);
             selectBox.data(ASSOCONTAINER, item2Container);
             itemContainer.after(item2Container);
             var parentData = itemContainer.parent().data(DATAOBJECT);
-            renderControl(itemContainer.data(ROOTCONTAINER), item2Container, optDefinition, parentData ? parentData[optDefinition.name] : null)
+            renderControl(itemContainer.data(ROOTCONTAINER), item2Container, optDefinition, parentData ? parentData[optDefinition.name] : null);
+
+            setting.layoutCreated(item2Container);
         }
     }
     
@@ -356,7 +369,7 @@ var AdvancedDataInput = function (userSetting) {
     };
     this.AddUIType = function (type, uiFunc, getFunc, viewFunc, override) {
         
-        if (typeof type !== 'string' || typeof uiFunc !== 'function' || typeof getFunc !== 'function') throw 'Invalid UI Type Initialization';
+        if (typeof type !== 'string' || typeof uiFunc !== 'function' || typeof getFunc !== 'function') error('Invalid UI Type Initialization');
 
          if (uiTypes.indexOf(type) < 0 || override) {
             if (uiTypes.indexOf(type) < 0) uiTypes.push(type);
