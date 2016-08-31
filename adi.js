@@ -12,7 +12,7 @@ var AdvancedDataInput = function (userSetting) {
     
     var logicTypes = ['group', 'array', 'optional'];
     
-    var error = (msg, root) => {
+    var error = function (msg, root) {
         if (root)
             root.html('Error occurred');
         else
@@ -79,14 +79,14 @@ var AdvancedDataInput = function (userSetting) {
         }
     };
     
-    var render = (container, definitions, data, crud) => {
+    var render = function (container, definitions, data, crud) {
         
         container.addClass('adi-container').data('crud', crud).data('dataObject', data);
         
         renderChildren(container, container, definitions, data);
     };
     
-    var renderChildren = (root, container, definitions, data) => {
+    var renderChildren = function (root, container, definitions, data) {
         
         var crud = root.data('crud');
         
@@ -179,7 +179,7 @@ var AdvancedDataInput = function (userSetting) {
         }
     }
     
-    var renderControl = (root, itemContainer, defn, data) => {
+    var renderControl = function (root, itemContainer, defn, data) {
         
         var crud = root.data('crud');
         
@@ -237,7 +237,7 @@ var AdvancedDataInput = function (userSetting) {
             options: defn.options || {},
             data: data,
             crud: crud,
-            validate: () => { getValue(this.container); },
+            validate: function () { getValue(this.container); },
             skipCaption: false,
             appendAlready: false
         };
@@ -335,7 +335,7 @@ var AdvancedDataInput = function (userSetting) {
         else
             error('Invalid ui type: ' + type);
     };
-    this.AddUIType = (type, uiFunc, getFunc, viewFunc, override) => {
+    this.AddUIType = function (type, uiFunc, getFunc, viewFunc, override) {
         
         if (typeof type !== 'string' || typeof uiFunc !== 'function' || typeof getFunc !== 'function') throw 'Invalid UI Type Initialization';
 
@@ -347,7 +347,7 @@ var AdvancedDataInput = function (userSetting) {
          }
     };
     this.Render = render;
-    this.GetData = (container, callback) => {
+    this.GetData = function (container, callback) {
         var errorSummary = { valid: true, messages: [] };
         var obj = getObject(container, errorSummary);
         if (typeof callback === "function") callback(obj, errorSummary);
