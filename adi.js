@@ -54,7 +54,7 @@ var AdvancedDataInput = function (userSetting) {
         },
         'pattern': function () {
             if (this.options.pattern && this.value && !this.value.test(this.options.pattern))
-                setInvalid.call(this, this.options.requiredMessage || (this.caption + ' is not in correct format.'));
+                setInvalid.call(this, this.options.formatMessage || (this.caption + ' is not in correct format.'));
         }
     };
     
@@ -250,6 +250,9 @@ var AdvancedDataInput = function (userSetting) {
 
             if (!uiSetting.skipCaption) itemContainer.prepend($('<span class="adi-caption">').html(defn.caption || defn.name));
             if (!uiSetting.appendAlready) itemContainer.append($('<span class="adi-ctrl">').append(ctrl)); 
+            
+            var errorLabel = $('<span class="error">').hide();
+            itemContainer.data('errorLabel', errorLabel).append(errorLabel);
         }
         else if (crud === "r") {
             
@@ -260,17 +263,17 @@ var AdvancedDataInput = function (userSetting) {
         }
     }
     
-    var getObject = function (container) {
+    var getObject = function (container, errorSummary) {
         var value = {};
         container.children('.adi-item').each(function () {
-            value[$(this).data('definition').name] = getValue($(this));
+            value[$(this).data('definition').name] = getValue($(this), errorSummary);
         });
         container.data('dataObject', value);
 
         return value;
     }
     
-    var getValue = function (itemContainer) {
+    var getValue = function (itemContainer, errorSummary) {
         
         var defn = itemContainer.data('definition');
         var type = defn.type;
@@ -278,12 +281,12 @@ var AdvancedDataInput = function (userSetting) {
         
         switch (type) {
             case 'group':
-                result = getObject(itemContainer.children('.adi-group').first());
+                result = getObject(itemContainer.children('.adi-group').first(), errorSummary);
                 
                 break;
             case 'array':
                 var value = [];
-                itemContainer.children('.adi-group').each(function () { value.push(getObject($(this))); });
+                itemContainer.children('.adi-group').each(function () { value.push(getObject($(this), errorSummary)); });
                 result = (defn.convertEmptyToNull && value.length === 0) ? null : value;
 
                 break;
@@ -314,6 +317,13 @@ var AdvancedDataInput = function (userSetting) {
             
             for (var i in commonRules) {
                 ruleStore[commonRules[i]].call(validateSetting);
+
+                if (!validateSetting.status.valid) { 
+                    var errLabel = itemContainer.data('errorLabel');
+                    errLabel.html(validateSetting.status.message).fadeIn();
+                    if (errorSummary) { errorSummary.valid = false; errorSummary.messages.push(validateSetting.status.message); } 
+                    break; 
+                }
             }
             
             
@@ -334,5 +344,10 @@ var AdvancedDataInput = function (userSetting) {
          }
     };
     this.Render = render;
-    this.GetData = getObject;
+    this.GetData = (container, callback) => {
+        var errorSummary = { valid: true, messages: [] };
+        var obj = getObject(container, errorSummary);
+        if (typeof callback === "function") callback(obj, errorSummary);
+        return obj;
+    };
 };

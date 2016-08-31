@@ -48,7 +48,7 @@
                     {text:'Work', value:'Work', definition: { type: 'array', name: 'WorkDetail', caption: 'Detail', items: [
                         {name: 'Department', caption: 'Department', type: 'string'},
                         {name: 'Staff', caption: 'Staff', type: 'array', items: [
-                        {name: 'Name', caption: 'Your name', type: 'string'},
+                        {name: 'Name', caption: 'Your name', type: 'string', options: { required: true }},
                         {name: 'JobTitle', caption: 'Your job', type: 'date'}] }
                     ] }}
                 ]
