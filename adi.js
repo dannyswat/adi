@@ -317,12 +317,15 @@ var AdvancedDataInput = function (userSetting) {
             
             for (var i in commonRules) {
                 ruleStore[commonRules[i]].call(validateSetting);
-
+                var errLabel = itemContainer.data('errorLabel');
                 if (!validateSetting.status.valid) { 
-                    var errLabel = itemContainer.data('errorLabel');
+                    
                     errLabel.html(validateSetting.status.message).fadeIn();
                     if (errorSummary) { errorSummary.valid = false; errorSummary.messages.push(validateSetting.status.message); } 
                     break; 
+                }
+                else {
+                    errLabel.html('').hide();
                 }
             }
             
