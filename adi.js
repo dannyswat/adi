@@ -12,6 +12,18 @@ var AdvancedDataInput = function (userSetting) {
     
     var logicTypes = ['group', 'array', 'optional'];
     
+    var
+        ROOTCONTAINER= 'rootContainer',
+        DATAOBJECT= 'dataObject',
+        ERRORLABEL= 'errorLabel',
+        ITEMCONTAINER= 'itemContainer',
+        ASSOCONTAINER= 'associatedContainer',
+        GROUPCONTAINER= 'groupContainer',
+        PARENTNAME= 'parentName',
+        DEFINITION= 'definition',
+        ARRAYCONTAINER= 'arrayContainer'
+    ;
+
     var error = function (msg, root) {
         if (root)
             root.html('Error occurred');
@@ -22,10 +34,10 @@ var AdvancedDataInput = function (userSetting) {
     
     var uiCreator = {
         'string': function () {
-            return $('<input type="text" class="ui-string" />').val(this.data || this.options.defaultValue);
+            return $('<input type="text" class="ui-string" />').val(this.data || this.options.defaultValue).on('blur', this.validate);
         },
         'text': function () {
-            return $('<textarea class="ui-text"></textarea>').html(this.data || this.options.defaultValue);
+            return $('<textarea class="ui-text"></textarea>').html(this.data || this.options.defaultValue).on('blur', this.validate);
         },
         'select': function () {
             var ctrl = $('<select class="ui-select">');
@@ -33,14 +45,17 @@ var AdvancedDataInput = function (userSetting) {
                 ctrl.append($('<option>').attr('value', this.options.options[i].value).html(this.options.options[i].text || this.options.options[i].value));
             }
             if (this.data) ctrl.val(this.data);
-            
+            ctrl.on('change', this.validate);
+
             return ctrl;
         },
         'date': function () {
             var ctrl = $('<input type="text" class="ui-date" />').val(this.data || this.options.defaultValue);
             this.container.append(ctrl);
-            ctrl.datepicker(this.options);
+            var opts = { onSelect: this.validate };
+            ctrl.datepicker($.extend(opts, this.options));
             this.appendAlready = true;
+            
             return ctrl;
         }
     };
@@ -60,7 +75,7 @@ var AdvancedDataInput = function (userSetting) {
     
     var viewCreator = {
         '_': function () {
-            return $('<span class="ui-label">').html(this.data);
+            return jSpan('ui-label').html(this.data);
         }
     };
     
@@ -81,7 +96,7 @@ var AdvancedDataInput = function (userSetting) {
     
     var render = function (container, definitions, data, crud) {
         
-        container.addClass('adi-container').data('crud', crud).data('dataObject', data);
+        container.addClass('adi-container').data('crud', crud).data(DATAOBJECT, data);
         
         renderChildren(container, container, definitions, data);
     };
@@ -93,7 +108,7 @@ var AdvancedDataInput = function (userSetting) {
         for (var i = 0; i < definitions.length; i++) {
             var defn = definitions[i];
             
-            var itemContainer = $('<div class="adi-item">').data('parentName', container.data('parentName'));
+            var itemContainer = $('<div class="adi-item">').data(PARENTNAME, container.data(PARENTNAME));
             container.append(itemContainer);
             
             renderControl(root, itemContainer, defn, data ? data[defn.name] : null);
@@ -106,60 +121,64 @@ var AdvancedDataInput = function (userSetting) {
         this.status.message = msg;
     }
 
+    function jSpan(cssClass) {
+        return $('<span>').addClass(cssClass);
+    }
+
     function refreshChildren(container) {
         var data = getValue(container);
-        var parentName = container.data('parentName');
-        container.html('').data('parentName', parentName.substring(0, parentName.indexOf('.')));;
+        var parentName = container.data(PARENTNAME);
+        container.html('').data(PARENTNAME, parentName.substring(0, parentName.indexOf('.')));;
         //data[container.data('definition').name] = data;
-        renderControl(container.data('rootContainer'), container, container.data('definition'), data);
+        renderControl(container.data(ROOTCONTAINER), container, container.data('definition'), data);
     }
     
     function addGroupButtons(groupContainer) {
         
         // Button to remove item from array
         var minButton = $('<i class="fa fa-close removeButton" />').on('click', function () {        
-            $(this).data('groupContainer').slideUp(setting.animationSpeed, function () { var arrContainer = $(this).parent(); $(this).remove(); refreshChildren(arrContainer); });
-        }).data('groupContainer', groupContainer);
+            $(this).data(GROUPCONTAINER).slideUp(setting.animationSpeed, function () { var arrContainer = $(this).parent(); $(this).remove(); refreshChildren(arrContainer); });
+        }).data(GROUPCONTAINER, groupContainer);
         
         // Button to reorder items (up) in array
         var moveUpButton = $('<i class="fa fa-arrow-up moveUpButton" />').on('click', function () {        
-            var gc = $(this).data('groupContainer');
+            var gc = $(this).data(GROUPCONTAINER);
             gc.addClass('movingup'); gc.prev('.adi-group').addClass('movingdown');
             setTimeout(function (gc) { gc.removeClass('movingup'); gc.prev('.adi-group').removeClass('movingdown').before(gc); refreshChildren(gc.parent()); }, setting.animationSpeed, gc);
-        }).data('groupContainer', groupContainer);
+        }).data(GROUPCONTAINER, groupContainer);
         
         // Button to reorder items (down) in array
         var moveDownButton = $('<i class="fa fa-arrow-down moveDownButton" />').on('click', function () {        
-            var gc = $(this).data('groupContainer');
+            var gc = $(this).data(GROUPCONTAINER);
             gc.addClass('movingdown'); gc.next('.adi-group').addClass('movingup');
             setTimeout(function (gc) { gc.removeClass('movingdown'); gc.next('.adi-group').removeClass('movingup').after(gc); refreshChildren(gc.parent()); }, setting.animationSpeed, gc);
-        }).data('groupContainer', groupContainer);
+        }).data(GROUPCONTAINER, groupContainer);
         
         groupContainer.append(minButton).append(moveUpButton).append(moveDownButton);
     }
     
     function addArrayButtons(itemContainer) {
         var addButton = $('<i class="fa fa-plus addButton" />').on('click', function () {
-            var container = $(this).data('arrayContainer');
-            var parentName = container.data('parentName');
-            var grpContainer = $('<div class="adi-group">').data('parentName', parentName + '['+ container.children('.adi-group').length +']');
+            var container = $(this).data(ARRAYCONTAINER);
+            var parentName = container.data(PARENTNAME);
+            var grpContainer = $('<div class="adi-group">').data(PARENTNAME, parentName + '['+ container.children('.adi-group').length +']');
             container.append(grpContainer);
             grpContainer.after($(this));
-            renderChildren(container.data('rootContainer'), grpContainer, container.data('definition').items, null);
+            renderChildren(container.data(ROOTCONTAINER), grpContainer, container.data(DEFINITION).items, null);
             addGroupButtons(grpContainer);
             
             grpContainer.hide().slideDown(setting.animationSpeed);
             
-        }).data('arrayContainer', itemContainer);
+        }).data(ARRAYCONTAINER, itemContainer);
         
         itemContainer.append(addButton);
     }
     
     function renderOptionalControl(itemContainer, selectBox, value) {
         
-        var defn = itemContainer.data('definition');
+        var defn = itemContainer.data(DEFINITION);
         
-        var parentName = itemContainer.data('parentName');
+        var parentName = itemContainer.data(PARENTNAME);
 
         var optDefinition;
     
@@ -171,11 +190,11 @@ var AdvancedDataInput = function (userSetting) {
         }
         
         if (optDefinition) {
-            var item2Container = $('<div class="adi-item option-group">').data('parentName', parentName);
-            selectBox.data('associatedContainer', item2Container);
+            var item2Container = $('<div class="adi-item option-group">').data(PARENTNAME, parentName);
+            selectBox.data(ASSOCONTAINER, item2Container);
             itemContainer.after(item2Container);
-            var parentData = itemContainer.parent().data('dataObject');
-            renderControl(itemContainer.data('rootContainer'), item2Container, optDefinition, parentData ? parentData[optDefinition.name] : null)
+            var parentData = itemContainer.parent().data(DATAOBJECT);
+            renderControl(itemContainer.data(ROOTCONTAINER), item2Container, optDefinition, parentData ? parentData[optDefinition.name] : null)
         }
     }
     
@@ -183,24 +202,24 @@ var AdvancedDataInput = function (userSetting) {
         
         var crud = root.data('crud');
         
-        var parentName = itemContainer.data('parentName');
+        var parentName = itemContainer.data(PARENTNAME);
 
         if (uiTypes.indexOf(defn.type) < 0 && logicTypes.indexOf(defn.type) < 0) error('Invalid ui type: ' + defn.type, root);
         
-        itemContainer.data('definition', defn).data('dataObject', data).data('rootContainer', root);
+        itemContainer.data(DEFINITION, defn).data(DATAOBJECT, data).data(ROOTCONTAINER, root);
         
         switch (defn.type) {
             case 'group':
-                var groupContainer = $('<div class="adi-group">').data('dataObject', data).data('parentName', (parentName ? parentName + '.' : '') + defn.name);
+                var groupContainer = $('<div class="adi-group">').data(DATAOBJECT, data).data(PARENTNAME, (parentName ? parentName + '.' : '') + defn.name);
                 itemContainer.append($('<div class="adi-header">').html(defn.caption || defn.name)).append(groupContainer);
                 renderChildren(root, groupContainer, defn.items, data);
                 return;
             case 'array':
-                itemContainer.addClass('adi-array').data('parentName', (parentName ? parentName + '.' : '') + defn.name);
+                itemContainer.addClass('adi-array').data(PARENTNAME, (parentName ? parentName + '.' : '') + defn.name);
                 var rowCount = data ? data.length : (crud === "c" ? 1 : 0);
                 if (crud !== "r" || rowCount > 0) itemContainer.append($('<div class="adi-header">').html(defn.caption || defn.name));
                 for (var i = 0; i < rowCount; i++) {
-                    var arrGroupContainer = $('<div class="adi-group">').data('dataObject', data ? data[i] : null).data('parentName', itemContainer.data('parentName') + '[' + i + ']');
+                    var arrGroupContainer = $('<div class="adi-group">').data(DATAOBJECT, data ? data[i] : null).data(PARENTNAME, itemContainer.data(PARENTNAME) + '[' + i + ']');
                     itemContainer.append(arrGroupContainer);
                     renderChildren(root, arrGroupContainer, defn.items, data ? data[i] : null);
                     
@@ -214,11 +233,11 @@ var AdvancedDataInput = function (userSetting) {
                 
                 var selectBox = itemContainer.find('select');
                 
-                selectBox.data('itemContainer', itemContainer).on('change', function () {
+                selectBox.data(ITEMCONTAINER, itemContainer).on('change', function () {
                     
-                    var assContainer = $(this).data('associatedContainer');
+                    var assContainer = $(this).data(ASSOCONTAINER);
                     if (assContainer) assContainer.remove();
-                    var itemContainer = $(this).data('itemContainer');
+                    var itemContainer = $(this).data(ITEMCONTAINER);
                     
                     renderOptionalControl(itemContainer, $(this));
                 });
@@ -237,7 +256,7 @@ var AdvancedDataInput = function (userSetting) {
             options: defn.options || {},
             data: data,
             crud: crud,
-            validate: function () { getValue(this.container); },
+            validate: function () { getValue($(this).data(ITEMCONTAINER)); },
             skipCaption: false,
             appendAlready: false
         };
@@ -246,36 +265,36 @@ var AdvancedDataInput = function (userSetting) {
             
             var ctrl = uiCreator[defn.type].call(uiSetting);
             
-            ctrl.attr('name', (parentName ? parentName + '.' : '') + defn.name);
+            ctrl.attr('name', (parentName ? parentName + '.' : '') + defn.name).data(ITEMCONTAINER, itemContainer);
 
-            if (!uiSetting.skipCaption) itemContainer.prepend($('<span class="adi-caption">').html(defn.caption || defn.name));
-            if (!uiSetting.appendAlready) itemContainer.append($('<span class="adi-ctrl">').append(ctrl)); 
+            if (!uiSetting.skipCaption) itemContainer.prepend(jSpan('adi-caption').html(defn.caption || defn.name));
+            if (!uiSetting.appendAlready) itemContainer.append(jSpan('adi-ctrl').append(ctrl)); 
             
-            var errorLabel = $('<span class="error">').hide();
-            itemContainer.data('errorLabel', errorLabel).append(errorLabel);
+            var errorLabel = jSpan('adi-error').hide();
+            itemContainer.data(ERRORLABEL, errorLabel).append(errorLabel);
         }
         else if (crud === "r") {
             
             var field = viewCreator[defn.type] ? viewCreator[defn.type].call(uiSetting) : viewCreator['_'].call(uiSetting);
             
-            if (!uiSetting.skipCaption) itemContainer.prepend($('<span class="adi-caption">').html(defn.caption || defn.name));
-            if (!uiSetting.appendAlready) itemContainer.append($('<span class="adi-view">').append(field)); 
+            if (!uiSetting.skipCaption) itemContainer.prepend(jSpan('adi-caption').html(defn.caption || defn.name));
+            if (!uiSetting.appendAlready) itemContainer.append(jSpan('adi-view').append(field)); 
         }
     }
     
     var getObject = function (container, errorSummary) {
         var value = {};
         container.children('.adi-item').each(function () {
-            value[$(this).data('definition').name] = getValue($(this), errorSummary);
+            value[$(this).data(DEFINITION).name] = getValue($(this), errorSummary);
         });
-        container.data('dataObject', value);
+        container.data(DATAOBJECT, value);
 
         return value;
     }
     
     var getValue = function (itemContainer, errorSummary) {
         
-        var defn = itemContainer.data('definition');
+        var defn = itemContainer.data(DEFINITION);
         var type = defn.type;
         var result;
         
@@ -296,7 +315,7 @@ var AdvancedDataInput = function (userSetting) {
                 break;
         }
         
-        if (result) { itemContainer.data('dataObject', result); return result; }
+        if (result) { itemContainer.data(DATAOBJECT, result); return result; }
 
         if (uiTypes.indexOf(type) >= 0) {
         
@@ -306,7 +325,7 @@ var AdvancedDataInput = function (userSetting) {
             };
 
             result = uiExplorer[type].call(uiSetting);
-            itemContainer.data('dataObject', result); 
+            itemContainer.data(DATAOBJECT, result); 
             
             var validateSetting = {
                 options: defn.options || {},
@@ -317,7 +336,7 @@ var AdvancedDataInput = function (userSetting) {
             
             for (var i in commonRules) {
                 ruleStore[commonRules[i]].call(validateSetting);
-                var errLabel = itemContainer.data('errorLabel');
+                var errLabel = itemContainer.data(ERRORLABEL);
                 if (!validateSetting.status.valid) { 
                     
                     errLabel.html(validateSetting.status.message).fadeIn();
