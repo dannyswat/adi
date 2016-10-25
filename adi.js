@@ -9,7 +9,7 @@ var AdvancedDataInput = function (userSetting) {
     
     var lib = this;
     
-    var uiTypes = ['string', 'text', 'select', 'radio', 'checkbox', 'checklist', 'date'];
+    var uiTypes = ['string', 'text', 'select', 'radio', 'checkbox', 'checklist', 'date', 'number'];
     
     var logicTypes = ['group', 'array', 'optional'];
     
@@ -35,7 +35,9 @@ var AdvancedDataInput = function (userSetting) {
     
     var uiCreator = {
         'string': function () {
-            return $('<input type="text" class="ui-string" />').val(this.data || this.options.defaultValue).on('blur', this.validate);
+            var ctrl = $('<input type="text" class="ui-string" />').val(this.data || this.options.defaultValue).on('blur', this.validate);
+            if (this.options.maxLength) ctrl.attr('maxLength', this.options.maxLength);
+            return ctrl;
         },
         'text': function () {
             return $('<textarea class="ui-text"></textarea>').html(this.data || this.options.defaultValue).on('blur', this.validate);
@@ -61,6 +63,21 @@ var AdvancedDataInput = function (userSetting) {
             this.appendAlready = true;
 
             return ctrl;
+        },
+        'number': function () {
+            var ctrl = $('<input type="text" class="ui-number" />').val(this.data || this.options.defaultValue);
+            this.container.append(ctrl);
+
+            var opts = { change: this.validate };
+            $.extend(opts, this.options);
+
+            ctrl.spinner(opts);
+            this.appendAlready = true;
+
+            return ctrl;
+        },
+        'checkbox': function () {
+            return $('<input type="checkbox" class="ui-checkbox" />').prop('checked', this.data === true ? true : (this.data === false ? false : this.options.defaultValue));
         }
     };
     
@@ -72,7 +89,7 @@ var AdvancedDataInput = function (userSetting) {
                 setInvalid.call(this, this.options.requiredMessage || (this.caption + ' is required.'));
         },
         'pattern': function () {
-            if (this.options.pattern && this.value && !this.value.test(this.options.pattern))
+            if (this.options.pattern && this.value && !new RegExp(this.options.pattern).test(this.value))
                 setInvalid.call(this, this.options.formatMessage || (this.caption + ' is not in correct format.'));
         }
     };
@@ -95,6 +112,12 @@ var AdvancedDataInput = function (userSetting) {
         },
         'date': function () {
             return this.container.find('input').val();
+        },
+        'number': function () {
+            return this.container.find('input').spinner('value');
+        },
+        'checkbox': function () {
+            return this.container.find('input').prop('checked');
         }
     };
     
