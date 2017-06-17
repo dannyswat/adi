@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/admin.css" type="text/css" asp-append-version="true" />
+</head>
+<body>
+    <div class="page">
+        <header class="bg-blue">
+            <div class="logo">
+                <i class="fa fa-cube"></i><span class="brand">Das</span><span class="statement">Mgmt System</span>
+            </div>
+            <nav class="top-menu">
+                <ul class="icon-nav">
+                    <li><i class="fa fa-line-chart"></i></li>
+                    <li><i class="fa fa-bell"></i><span class="num">2</span></li>
+                    <li><i class="fa fa-cog"></i></li>
+                    <li><i class="fa fa-user"></i><span class="username">Dannys</span></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="">
+            <nav class="side-menu bg-grey">
+                <h3 class="bg-green">Section</h3>
+                <ul class="nav vertical">
+                    <li><a href="#">Header 1</a>
+                        <ul class="sub-nav vertical">
+                            <li><a href="#">Item 1</a></li>
+                            <li><a href="#">Item 2</a></li>
+                            <li><a href="#">Item 3</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Header 2</a></li>
+                    <li><a href="#">Header 3</a></li>
+                    <li><a href="#">Header 4</a></li>
+                </ul>
+                <h3 class="bg-green">Section</h3>
+                <ul class="nav vertical">
+                    <li><a href="#">Header 2</a></li>
+                    <li><a href="#">Header 3</a></li>
+                    <li><a href="#">Header 4</a></li>
+                </ul>
+            </nav>
+            <div class="content">
+                <div class="tabs page-tabs"><a class="tab page-tab active" href="#">Website Banner</a><a class="tab page-tab" href="#">Banner HTML</a></div>
+                <div class="content-panel">
+                    <div class="content-wrapper">
+                        <h1>Website Banner Management</h1>
+                        <table class="data-grid">
+                            <tr><th>Name</th><th>Content</th><th></th></tr>
+                            <tr><td>Top Banner</td><td>Hello World</td><td class="center"><a href="#">View Detail</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="bg-grey">
+            &copy; Das 2017
+        </footer>
+    </div>
+</body>
+</html>
