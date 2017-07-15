@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schema UI</title>
+    <style type="text/css">
+        .sui-caption { display:inline-block; width:150px; }
+        .sui-item { margin:10px 0; }
+        .sui-tabaarea { margin:10px 0; }
+        .sui-tabs { margin:0; padding:0; list-style:none; display:block; }
+        .sui-tab { display:inline-block; padding:5px 10px; margin:0 5px; border:1px solid #000; cursor:pointer; }
+        .sui-tab.active { font-weight:bold; }
+        .sui-tabcontent { display:none; border:1px solid #000; padding:10px; margin:10px 0; }
+    </style>
+</head>
+<body>
+    <div id="container">
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="schema.js"></script>
+    <script type="text/javascript">
+        $sui.render('#container', {
+            array: false,
+            items: [
+                { name: 'Name', caption: 'Your Name', type: 'string', setting: { required: true } },
+                { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } },
+                { name: 'GFQty', caption: 'How Many?', type: 'string', setting: { required: true, inTab: 'gf' } },
+                { name: 'GirlFriends', caption: 'List of Girl Friends', type: 'array', setting: { inTab: 'gf' }, items: [
+                    { name: 'Name', caption: 'Her Name', type: 'string', setting: { required: true } },
+                    { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } }
+                ] },
+                { name: 'Friends', caption: 'List of Friends', type: 'array', setting: { inTab: 'fd' }, items: [
+                    { name: 'Name', caption: 'Name', type: 'string', setting: { required: true } },
+                    { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } }
+                ] }
+            ],
+            tabs: [
+                { name: 'gf', caption: 'Girl Friends' },
+                { name: 'fd', caption: 'Friends' }
+            ]
+        }, {Name: 'Dannys', School: 'KTGSS', GirlFriends: [{Name: 'Wing', School: 'HKUST'}] }, 'c');
+    </script>
+</body>
+
+</html>

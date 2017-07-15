@@ -22,7 +22,7 @@ header .logo .brand { font-size:20px; line-height:45px; vertical-align:bottom; p
 header .logo .statement { font-size:11px; line-height:45px; display:inline-block; padding-top:15px; vertical-align:bottom; position:relative; left:-32px; }
 header .top-menu { margin-left:180px; }
 .side-menu { width: 180px; position:absolute; padding:5px 0; top:0; bottom:0; }
-.content { background-color:#9e9e9e; margin-left:180px; position:relative; min-height:400px; padding:5px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; }
+.content { background-color:#9e9e9e; margin-left:180px; position:relative; min-height:600px; padding:5px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; }
 .breadcrumb { padding:0 10px 10px 5px; color:#888; }
 .content-wrapper { padding:5px; }
 a.page-tab { text-decoration:none;border:1px solid #888; background-color:#003c6b; color:#FFF; margin-right:2px; padding:5px 30px 5px 10px; display:inline-block; }
@@ -35,10 +35,10 @@ nav h3 { margin:5px 0; padding:0 10px 0 15px; font-weight:normal; line-height:2;
 
 ul.nav, ul.sub-nav, ul.icon-nav { margin:0; padding:0; list-style:none; display:block; position:relative; }
 ul.nav a { text-decoration:none; display:block; padding:8px 10px 8px 15px; }
-ul.nav li { display:block; } 
+ul.nav li { display:block; position:relative; } 
 ul.nav.horizontal > li { float:left; }
 ul.nav.horizontal .sub-nav { display:none; position:absolute; clear:left; z-index:5; }
-ul.nav.vertical .sub-nav { display:none; padding-left:10px; }
+ul.nav.vertical .sub-nav { display:none; position:absolute; z-index:6; left:100%; top:0; width:100%; background: #ffffff; border:1px solid #333; }
 ul.nav li:hover .sub-nav { display:block; }
 ul.nav .sub-nav a { padding:5px 40px 5px 10px; }
 
