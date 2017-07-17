@@ -180,7 +180,7 @@ function SchemaUI() {
         }
         if (typeof func !== 'function') throw 'Invalid function';
 
-        itemContainer.data(schemaKey, itemSchema);
+        itemContainer.addClass(itemSchema.type).data(schemaKey, itemSchema);
 
         func(event);
 

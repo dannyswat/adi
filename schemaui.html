@@ -4,12 +4,14 @@
     <title>Schema UI</title>
     <style type="text/css">
         .sui-caption { display:inline-block; width:150px; }
+        .sui-required::after { content: "*"; color:#F00; }
         .sui-item { margin:10px 0; }
         .sui-tabaarea { margin:10px 0; }
         .sui-tabs { margin:0; padding:0; list-style:none; display:block; }
         .sui-tab { display:inline-block; padding:5px 10px; margin:0 5px; border:1px solid #000; cursor:pointer; }
         .sui-tab.active { font-weight:bold; }
         .sui-tabcontent { display:none; border:1px solid #000; padding:10px; margin:10px 0; }
+        .sui-group { border:1px solid #EAEAEA; }
     </style>
 </head>
 <body>
@@ -37,7 +39,7 @@
                 { name: 'gf', caption: 'Girl Friends' },
                 { name: 'fd', caption: 'Friends' }
             ]
-        }, {Name: 'Dannys', School: 'KTGSS', GirlFriends: [{Name: 'Wing', School: 'HKUST'}] }, 'c');
+        }, {Name: 'Dannys', School: 'KTGSS', GirlFriends: [{Name: 'FFx', School: 'HKU'}] }, 'c');
     </script>
 </body>
 
