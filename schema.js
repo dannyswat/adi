@@ -18,7 +18,11 @@ function SchemaUI() {
             return arrayContainer;
         },
         readInputs: function (e) {
-            
+            var obj = [];
+            e.element.children('.sui-array').children('.sui-group').each(function () {
+                obj.push(getItems($(this), e.schema, e.modelState));
+            });
+            return obj;
         }
     };
 
@@ -32,7 +36,7 @@ function SchemaUI() {
             return groupContainer;
         },
         readInputs: function (e) {
-
+            return getItems(e.element.children('.sui-group').first(), e.schema, e.modelState);
         }
     };
 
@@ -43,7 +47,7 @@ function SchemaUI() {
         'date': { inputFunc: '', readFunc: '', viewFunc: '' },
         'multiple': { inputFunc: '', readFunc: '', viewFunc: '' },
         'options': { inputFunc: '', readFunc: '', viewFunc: '' },
-        'group': { inputFunc: '', readFunc: '', viewFunc: '' },
+        'group': { },
         'array': { }
     };
 
@@ -57,7 +61,8 @@ function SchemaUI() {
             if (e.setting.className) input.addClass(e.setting.className);
             return input;
         },
-        'array': arrayFuncs.createInputs
+        'array': arrayFuncs.createInputs,
+        'group': groupFuncs.createInputs
     };
 
     var viewLibrary = {
@@ -66,7 +71,8 @@ function SchemaUI() {
             e.element.append(span);
             if (e.setting.className) input.addClass(e.setting.className);
         },
-        'array': arrayFuncs.createViews
+        'array': arrayFuncs.createViews,
+        'group': groupFuncs.createViews
     };
 
     var readLibrary = {
@@ -81,7 +87,9 @@ function SchemaUI() {
             else if (e.setting.minLength && value.length < e.setting.minLength)
                 e.setError(e.setting.lengthMessage || (e.schema.caption + ' requires at least length of ' + e.setting.minLength));
             return value;
-        }
+        },
+        'array': arrayFuncs.readInputs,
+        'group': groupFuncs.readInputs
     };
 
     var animateLibrary = {
@@ -239,7 +247,60 @@ function SchemaUI() {
 
     }
 
+    function getItem(itemContainer, itemSchema, modelState) {
+        var itemType = dataTypes[itemSchema.type];
+        var readFunc = readLibrary[itemType.readFunc || itemSchema.type] || readLibrary['*'];
+        var event = {
+            element: itemContainer,
+            schema: itemSchema,
+            setting: itemSchema.setting || {},
+            modelState: modelState,
+            setError: function (msg) {
+                modelState.push({ field: itemSchema.name, message: msg });
+            }
+        };
+        return readFunc(event);
+    }
+
+    function getItems(container, schema, modelState) {
+        var obj = {};
+        container.children('.sui').each(function () {
+            if ($(this).hasClass('sui-item')) {
+                var itemSchema = $(this).data(schemaKey);
+                obj[itemSchema.name] = getItem($(this), itemSchema, modelState);
+            }
+            else {
+                if ($(this).children('.sui').length > 0)
+                    obj = $.extend(obj, getItems($(this), schema, modelState));
+            }
+        });
+        return obj;
+    }
+
+    function getData(element, callback) {
+        init();
+        var container = $(element);
+        if (!container || !container.length) throw 'Invalid container';
+        var schema = container.data(schemaKey);
+        var modelState = [];
+        var data;
+        if (schema.array) {
+            var obj = [];
+            container.children('.sui-array').children('.sui-group').each(function () {
+                obj.push(getItems($(this), schema.items, modelState));
+            });
+            data = obj;
+        }
+        else {
+            data = getItems(container, schema.items, modelState);
+        }
+        if (callback) callback(data, modelState);
+
+        return data;
+    }
+
     this.render = render;
+    this.get = getData;
 }
 
 var $sui = new SchemaUI();
