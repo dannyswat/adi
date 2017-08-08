@@ -1,3 +1,25 @@
+function SchemaUIInstance(element) {
+    var _root = $(element);
+    var flags = _root.data('flags') || [];
+    this.addFlag = function (flag) {
+        flags.push(flag);
+        _root.trigger('flagUpdated');
+    };
+    this.removeFlag = function (flag) {
+        var i = flags.indexOf(flag);
+        if (i >= 0) { 
+            flags.splice(i, 1);
+            _root.trigger('flagUpdated');
+        }
+    };
+    this.addOptionsInput = function (select) {
+        var e = $(select);
+        e.data('prevValue', e.val());
+        e.on('change', function () { });
+    };
+    this.schema  = function () { return _root.data('schema'); };
+}
+
 function SchemaUI() {
     var $;
     var schemaKey = 'schema', dataKey = 'formData', statusKey = 'status', nameKey = 'name';
