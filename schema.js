@@ -42,7 +42,7 @@ function SchemaUI() {
 
     var dataTypes = {
         'string': { inputFunc: '*', readFunc: '*', viewFunc: '*' },
-        'number': { inputFunc: '', readFunc: '', viewFunc: '' },
+        'number': { inputFunc: 'number', readFunc: 'number', viewFunc: '*' },
         'boolean': { inputFunc: '', readFunc: '', viewFunc: '' },
         'date': { inputFunc: '', readFunc: '', viewFunc: '' },
         'multiple': { inputFunc: '', readFunc: '', viewFunc: '' },
@@ -53,12 +53,23 @@ function SchemaUI() {
 
     var inputLibrary = {
         '*': function (e) {
-            var input = $('<input type="text" class="sui-text" />');
+            var input = $('<input type="text" class="sui-input sui-text" />');
             e.element.append(input);
             input.val(e.data);
             if (e.setting.placeholder) input.attr('placeholder', setting.placeholder);
             if (e.setting.width) input.width(e.setting.width);
             if (e.setting.className) input.addClass(e.setting.className);
+            if (e.setting.defaultValue !== null && input.val() === '') input.val(e.setting.defaultValue);
+            return input;
+        },
+        'number': function (e) {
+            var input = $('<input type="number" class="sui-input sui-number" />');
+            e.element.append(input);
+            input.val(e.data);
+            if (e.setting.placeholder) input.attr('placeholder', setting.placeholder);
+            if (e.setting.width) input.width(e.setting.width);
+            if (e.setting.className) input.addClass(e.setting.className);
+            if (e.setting.defaultValue !== null && input.val() === '') input.val(e.setting.defaultValue);
             return input;
         },
         'array': arrayFuncs.createInputs,
@@ -87,6 +98,12 @@ function SchemaUI() {
             else if (e.setting.minLength && value.length < e.setting.minLength)
                 e.setError(e.setting.lengthMessage || (e.schema.caption + ' requires at least length of ' + e.setting.minLength));
             return value;
+        },
+        'number': function (e) {
+            var value = e.element.find('input').val();
+            if (e.setting.required && $.trim(value) === '')
+                e.setError(e.setting.requiredMessage || (e.schema.caption + ' is required'));
+            return parseInt(value, 10);
         },
         'array': arrayFuncs.readInputs,
         'group': groupFuncs.readInputs

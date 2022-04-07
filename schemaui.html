@@ -17,6 +17,8 @@
 <body>
     <div id="container">
     </div>
+    <div id="button" onclick="getData('#container')">Get Data</div>
+    <div id="output"></div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="schema.js"></script>
     <script type="text/javascript">
@@ -25,10 +27,11 @@
             items: [
                 { name: 'Name', caption: 'Your Name', type: 'string', setting: { required: true } },
                 { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } },
-                { name: 'GFQty', caption: 'How Many?', type: 'string', setting: { required: true, inTab: 'gf' } },
+                { name: 'GFQty', caption: 'How Many?', type: 'number', setting: { required: true, defaultValue: 0, inTab: 'gf' } },
                 { name: 'GirlFriends', caption: 'List of Girl Friends', type: 'array', setting: { inTab: 'gf' }, items: [
                     { name: 'Name', caption: 'Her Name', type: 'string', setting: { required: true } },
-                    { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } }
+                    { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } },
+                    { name: 'BFCount', caption: 'Number of BF', type: 'number', setting: { required: true, defaultValue: 0 } }
                 ] },
                 { name: 'Friends', caption: 'List of Friends', type: 'array', setting: { inTab: 'fd' }, items: [
                     { name: 'Name', caption: 'Name', type: 'string', setting: { required: true } },
@@ -40,6 +43,10 @@
                 { name: 'fd', caption: 'Friends' }
             ]
         }, {Name: 'Dannys', School: 'KTGSS', GirlFriends: [{Name: 'FFx', School: 'HKU'}] }, 'c');
+
+        function getData(id) {
+            $('#output').text(JSON.stringify($sui.get(id)));
+        }
     </script>
 </body>
 
