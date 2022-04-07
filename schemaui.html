@@ -27,8 +27,14 @@
             items: [
                 { name: 'Name', caption: 'Your Name', type: 'string', setting: { required: true } },
                 { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } },
-                { name: 'GFQty', caption: 'How Many?', type: 'number', setting: { required: true, defaultValue: 0, inTab: 'gf' } },
-                { name: 'GirlFriends', caption: 'List of Girl Friends', type: 'array', setting: { inTab: 'gf' }, items: [
+                { name: 'HasGirlFriend', caption: 'Ever had girl friends?', type: 'options', options: 
+                [
+                    { text: '', value: '' },
+                    { text: 'Yes', value: 'Y', flags: 'gf' },
+                    { text: 'No', value: 'N' }
+                ] , setting: { required: true } },
+                { name: 'GFQty', caption: 'How Many?', type: 'string', setting: { required: true, defaultValue: 0, inTab: 'gf', optional: 'gf' } },
+                { name: 'GirlFriends', caption: 'List of Girl Friends', type: 'array', setting: { inTab: 'gf', optional: 'gf' }, items: [
                     { name: 'Name', caption: 'Her Name', type: 'string', setting: { required: true } },
                     { name: 'School', caption: 'Latest School', type: 'string', setting: { required: true } },
                     { name: 'BFCount', caption: 'Number of BF', type: 'number', setting: { required: true, defaultValue: 0 } }
