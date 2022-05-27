@@ -1,1 +1,107 @@
-<mxfile host="app.diagrams.net" modified="2022-05-27T02:15:09.403Z" agent="5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53" version="18.1.2" etag="hs4dcP4DvBPm192KLFFQ" type="github"><diagram id="Fw-GKJTK4F_Vp6w7MaoA">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2022-05-27T02:32:30.135Z" agent="5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53" etag="TjHx1wMyoH26FSr5b4g2" version="18.1.2" type="github">
+  <diagram id="Fw-GKJTK4F_Vp6w7MaoA" name="Page-1">
+    <mxGraphModel dx="1422" dy="834" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MHzId7og_cMenmrgPDzA-1" value="Venue" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-2" value="Operating Staff" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="790" y="350" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MHzId7og_cMenmrgPDzA-3" target="MHzId7og_cMenmrgPDzA-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-3" value="Venue type" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-4" value="Venue schedule" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-5" value="Operating staff schedule" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="350" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MHzId7og_cMenmrgPDzA-6" target="MHzId7og_cMenmrgPDzA-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-6" value="Equipment" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-7" value="Equipment schedule" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-8" value="Equipment type" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="620" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="MHzId7og_cMenmrgPDzA-9" target="MHzId7og_cMenmrgPDzA-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="MHzId7og_cMenmrgPDzA-9" target="MHzId7og_cMenmrgPDzA-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="200" />
+              <mxPoint x="530" y="365" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="MHzId7og_cMenmrgPDzA-9" target="MHzId7og_cMenmrgPDzA-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="510" y="215" />
+              <mxPoint x="510" y="635" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-9" value="Event" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-10" value="Event type" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-18" value="Event pricing plan" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-19" value="Event booking" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-29" value="Event booking transaction" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="540" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-30" value="" style="swimlane;startSize=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="20" width="970" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-23" value="Event attendance" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-30">
+          <mxGeometry x="20" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-31" value="" style="swimlane;startSize=0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="710" width="460" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-20" value="Customer" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-31">
+          <mxGeometry x="105" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-21" value="Member level" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-31">
+          <mxGeometry x="235" y="140" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-22" value="Contact" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-31">
+          <mxGeometry x="45" y="140" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-25" value="Customer login" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-31">
+          <mxGeometry x="295" y="50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-32" value="" style="swimlane;startSize=0;" vertex="1" parent="1">
+          <mxGeometry x="530" y="710" width="450" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-26" value="Invoice" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-32">
+          <mxGeometry x="90" y="55" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-27" value="Customer deposit" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-32">
+          <mxGeometry x="280" y="65" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MHzId7og_cMenmrgPDzA-28" value="Sales receipt" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="MHzId7og_cMenmrgPDzA-32">
+          <mxGeometry x="180" y="165" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
