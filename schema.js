@@ -68,7 +68,7 @@ function SchemaUI() {
         'boolean': { inputFunc: '', readFunc: '', viewFunc: '' },
         'date': { inputFunc: '', readFunc: '', viewFunc: '' },
         'multiple': { inputFunc: '', readFunc: '', viewFunc: '' },
-        'options': { inputFunc: '', readFunc: '', viewFunc: '' },
+        'options': { inputFunc: 'options', readFunc: 'options', viewFunc: '*' },
         'group': { },
         'array': { }
     };
@@ -93,6 +93,18 @@ function SchemaUI() {
             if (e.setting.className) input.addClass(e.setting.className);
             if (e.setting.defaultValue !== null && input.val() === '') input.val(e.setting.defaultValue);
             return input;
+        },
+        'options': function (e) {
+            var input = $('<select class="sui-input sui-select" />');
+            e.element.append(input);
+            for (var i in e.options) {
+                var opt = $('<option>').text(e.options[i].text).attr('value', e.options[i].value);;
+                if (e.options[i].flags) opt.data('flags', e.options[i].flags);
+                if (e.setting.defaultValue !== null && e.options[i].value === e.setting.defaultValue) opt.prop('selected', true); 
+                opt.appendTo(input);
+            }
+            if (e.setting.width) input.width(e.setting.width);
+            if (e.setting.className) input.addClass(e.setting.className);
         },
         'array': arrayFuncs.createInputs,
         'group': groupFuncs.createInputs
@@ -126,6 +138,12 @@ function SchemaUI() {
             if (e.setting.required && $.trim(value) === '')
                 e.setError(e.setting.requiredMessage || (e.schema.caption + ' is required'));
             return parseInt(value, 10);
+        },
+        'options': function (e) {
+            var value = e.element.find('select').val();
+            if (e.setting.required && $.trim(value) === '')
+                e.setError(e.setting.requiredMessage || (e.schema.caption + ' is required'));
+            return value;
         },
         'array': arrayFuncs.readInputs,
         'group': groupFuncs.readInputs
@@ -212,6 +230,7 @@ function SchemaUI() {
             root: rootContainer,
             status: status
         };
+        if (itemSchema.options) event.options = itemSchema.options;
         var func;
 
         switch (status) {
